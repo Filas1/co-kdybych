@@ -12,6 +12,7 @@ import {
 } from "@/lib/format";
 import type { CalculatorInputs, InputError } from "@/lib/inputs";
 import { savingsRateIsEstimate } from "@/lib/market";
+import { ChartSection } from "./ChartSection";
 import { ModeToggle } from "./ModeToggle";
 import { SavingsRateField } from "./SavingsRateField";
 
@@ -60,6 +61,8 @@ export function Results({ inputs, errors, result, lesson, onChange }: Props) {
       </div>
 
       {lesson && <p className="rounded-3xl bg-accent p-5 text-lg font-bold leading-snug text-on-accent">{lesson}</p>}
+
+      <ChartSection result={result} />
 
       <ul className="grid gap-3 sm:grid-cols-2">
         {available.map((asset) => (

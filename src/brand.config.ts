@@ -33,6 +33,9 @@ export const brand = {
     onAccent: "#0F0F14",
     gain: "#C6F432",
     loss: "#FF7A7A",
+    /** Recessive chart chrome: gridlines one step off the surface, the baseline a step further. */
+    chartGrid: "#26262F",
+    chartAxis: "#3A3A46",
   },
 
   /**

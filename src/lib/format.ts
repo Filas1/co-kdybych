@@ -14,6 +14,8 @@ const czkSigned = new Intl.NumberFormat("cs-CZ", {
   signDisplay: "exceptZero",
 });
 
+const compact = new Intl.NumberFormat("cs-CZ", { notation: "compact", maximumFractionDigits: 1 });
+
 const percentByDigits = new Map<number, Intl.NumberFormat>();
 
 const percentSigned = new Intl.NumberFormat("cs-CZ", {
@@ -44,6 +46,11 @@ export function formatCzk(value: number): string {
 /** 12345 → "+12 345 Kč", -500 → "-500 Kč" (for gains/losses) */
 export function formatCzkSigned(value: number): string {
   return czkSigned.format(cleanZero(value, 0));
+}
+
+/** Short form for chart axes: 200000 → "200 tis.", 11625694 → "11,6 mil." */
+export function formatCompact(value: number): string {
+  return compact.format(cleanZero(value, 0));
 }
 
 /** 0.123 → "12,3 %" (input is a fraction, not a percentage); maxDigits 0 → "12 %" */

@@ -43,7 +43,12 @@ the UI or on the share image (the image shows the site URL instead).
 - Asset colors were validated for color-vision deficiency against the dark background; cash is
   neutral gray (in nominal mode it equals the "invested" line, which is dashed).
 - `src/components/` – `Calculator` (client state, recomputes on every change), `InputsForm`,
-  `Results` (with `ModeToggle` and `SavingsRateField`), `Footer`. `src/lib/inputs.ts` holds
+  `Results` (with `ModeToggle`, `SavingsRateField`, `ChartSection`), `Footer`.
+- Chart: `src/lib/chart-data.ts` (pure: series, rows, ticks, `dominantAsset`) + `ValueChart`
+  (Recharts 3, `responsive` prop, animation off, custom tooltip; a fixed `width` and
+  `interactive={false}` render it for the share image). When one asset's peak is ≥ 3× every other
+  line (in practice Bitcoin), `ChartSection` offers hiding it from the chart only.
+- `react-is` must match the installed React version (Recharts requirement). `src/lib/inputs.ts` holds
   defaults, limits and validation; `src/lib/market.ts` loads the bundled JSON.
 - Inputs are mirrored in URL search params so a result can be shared by link.
 - The project path must not contain `?` – Turbopack truncates paths at it and the build fails.

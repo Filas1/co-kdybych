@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  formatCompact,
   formatCzk,
   formatCzkSigned,
   formatMonth,
@@ -24,6 +25,14 @@ describe("formatCzk", () => {
     expect(formatCzkSigned(12345)).toBe(`+12${NBSP}345${NBSP}Kč`);
     expect(formatCzkSigned(-500)).toBe(`-500${NBSP}Kč`);
     expect(formatCzkSigned(0)).toBe(`0${NBSP}Kč`);
+  });
+});
+
+describe("formatCompact", () => {
+  it("shortens big numbers for chart axes", () => {
+    expect(formatCompact(200000)).toBe(`200${NBSP}tis.`);
+    expect(formatCompact(11625694)).toBe(`11,6${NBSP}mil.`);
+    expect(formatCompact(500)).toBe("500");
   });
 });
 
