@@ -12,8 +12,10 @@ behind important decisions.
 The site is intentionally NOT tied to the owner's personal social profile: no handle anywhere in
 the UI or on the share image (the image shows the site URL instead).
 
-Production: https://co-kdybych.vercel.app (Vercel, deploys automatically on every push to `main`;
-repo github.com/Filas1/co-kdybych).
+Production: https://cokdybych.cz (Vercel, deploys automatically on every push to `main`;
+repo github.com/Filas1/co-kdybych). The site URL baked into the build (story image, metadata)
+comes from Vercel's `NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL`, i.e. the shortest production
+domain; after changing domains, redeploy.
 
 ## Commands
 
