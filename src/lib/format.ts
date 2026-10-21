@@ -14,10 +14,7 @@ const czkSigned = new Intl.NumberFormat("cs-CZ", {
   signDisplay: "exceptZero",
 });
 
-const percent = new Intl.NumberFormat("cs-CZ", {
-  style: "percent",
-  maximumFractionDigits: 1,
-});
+const percentByDigits = new Map<number, Intl.NumberFormat>();
 
 const percentSigned = new Intl.NumberFormat("cs-CZ", {
   style: "percent",
@@ -31,24 +28,37 @@ const monthYear = new Intl.DateTimeFormat("cs-CZ", {
   timeZone: "UTC",
 });
 
+/**
+ * Intl prints "-0" for tiny negative numbers like -0.0000001 (a float rounding leftover).
+ * Anything that would display as zero is turned into a real zero first.
+ */
+function cleanZero(value: number, decimals: number): number {
+  return Math.abs(value) < 0.5 * 10 ** -decimals ? 0 : value;
+}
+
 /** 1234567 → "1 234 567 Kč" */
 export function formatCzk(value: number): string {
-  return czk.format(value);
+  return czk.format(cleanZero(value, 0));
 }
 
 /** 12345 → "+12 345 Kč", -500 → "-500 Kč" (for gains/losses) */
 export function formatCzkSigned(value: number): string {
-  return czkSigned.format(value);
+  return czkSigned.format(cleanZero(value, 0));
 }
 
-/** 0.123 → "12,3 %" (input is a fraction, not a percentage) */
-export function formatPercent(fraction: number): string {
-  return percent.format(fraction);
+/** 0.123 → "12,3 %" (input is a fraction, not a percentage); maxDigits 0 → "12 %" */
+export function formatPercent(fraction: number, maxDigits = 1): string {
+  let format = percentByDigits.get(maxDigits);
+  if (!format) {
+    format = new Intl.NumberFormat("cs-CZ", { style: "percent", maximumFractionDigits: maxDigits });
+    percentByDigits.set(maxDigits, format);
+  }
+  return format.format(cleanZero(fraction, maxDigits + 2));
 }
 
 /** 0.123 → "+12,3 %" */
 export function formatPercentSigned(fraction: number): string {
-  return percentSigned.format(fraction);
+  return percentSigned.format(cleanZero(fraction, 3));
 }
 
 /** "2015-01" → "leden 2015" */

@@ -30,6 +30,18 @@ describe("formatPercent", () => {
     expect(formatPercent(1)).toBe(`100${NBSP}%`);
   });
 
+  it("can round to whole percent", () => {
+    expect(formatPercent(0.8349, 0)).toBe(`83${NBSP}%`);
+  });
+
+  it("never prints a negative zero for float leftovers", () => {
+    expect(formatPercent(-1e-12)).toBe(`0${NBSP}%`);
+    expect(formatPercent(-0.0004, 0)).toBe(`0${NBSP}%`);
+    expect(formatPercentSigned(-1e-12)).toBe(`0${NBSP}%`);
+    expect(formatCzk(-0.3)).toBe(`0${NBSP}Kč`);
+    expect(formatCzkSigned(-0.3)).toBe(`0${NBSP}Kč`);
+  });
+
   it("shows a plus sign for gains in the signed variant", () => {
     expect(formatPercentSigned(0.5)).toBe(`+50${NBSP}%`);
     expect(formatPercentSigned(-0.25)).toBe(`-25${NBSP}%`);
