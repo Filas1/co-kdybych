@@ -1,25 +1,29 @@
 @import "tailwindcss";
 
-/* Placeholder tokens; real brand colors come from src/brand.config.ts in step 4. */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/*
+ * Brand colors come from src/brand.config.ts: the root layout writes them as --brand-* variables
+ * on <html>. Here they become Tailwind theme colors, so classes like bg-surface or text-accent work.
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg: var(--brand-bg);
+  --color-surface: var(--brand-surface);
+  --color-surface-raised: var(--brand-surfaceRaised);
+  --color-line: var(--brand-border);
+  --color-fg: var(--brand-fg);
+  --color-muted: var(--brand-muted);
+  --color-accent: var(--brand-accent);
+  --color-on-accent: var(--brand-onAccent);
+  --color-gain: var(--brand-gain);
+  --color-loss: var(--brand-loss);
+  --font-sans: var(--font-brand), ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--brand-bg);
+  color: var(--brand-fg);
+}
+
+/* Numbers in results and tables keep a fixed width per digit, so columns do not jump. */
+.tabular {
+  font-variant-numeric: tabular-nums;
 }

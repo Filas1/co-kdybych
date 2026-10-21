@@ -3,6 +3,9 @@ import {
   formatCzk,
   formatCzkSigned,
   formatMonth,
+  formatMonthEnd,
+  formatMonthGenitive,
+  formatMonthName,
   formatPercent,
   formatPercentSigned,
 } from "./format";
@@ -52,5 +55,21 @@ describe("formatMonth", () => {
   it("prints the Czech month name", () => {
     expect(formatMonth("2015-01")).toBe("leden 2015");
     expect(formatMonth("2026-09")).toBe("září 2026");
+  });
+
+  it("has a genitive form for 'od … / do …'", () => {
+    expect(formatMonthGenitive("2014-12")).toBe("prosince 2014");
+    expect(formatMonthGenitive("2015-01")).toBe("ledna 2015");
+    expect(formatMonthGenitive("2026-09")).toBe("září 2026");
+  });
+
+  it("prints the last day of a month", () => {
+    expect(formatMonthEnd("2026-09")).toBe("30. září 2026");
+    expect(formatMonthEnd("2024-02")).toBe("29. února 2024");
+  });
+
+  it("names a month on its own", () => {
+    expect(formatMonthName(1)).toBe("leden");
+    expect(formatMonthName(12)).toBe("prosinec");
   });
 });

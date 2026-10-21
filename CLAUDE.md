@@ -6,8 +6,11 @@ Czech web app: "What if I had invested X CZK every month since <date>?" The user
 amount (CZK, optional one-off initial deposit), a start month and assets to compare (S&P 500 with
 reinvested dividends, gold, Bitcoin, savings account, cash). The app shows what it would be worth
 today, nominally or in today's crowns (inflation-adjusted). Audience: Czech Gen Z, mostly arriving
-from Instagram (@filipvondy) on mobile. Portfolio project; the owner is learning, so briefly explain
-the "why" behind important decisions.
+from Instagram on mobile. Portfolio project; the owner is learning, so briefly explain the "why"
+behind important decisions.
+
+The site is intentionally NOT tied to the owner's personal social profile: no handle anywhere in
+the UI or on the share image (the image shows the site URL instead).
 
 ## Commands
 
@@ -33,7 +36,15 @@ the "why" behind important decisions.
 - `src/lib/calc/` – pure calculation functions (simulation, XIRR, max drawdown, inflation
   adjustment, lesson sentence). No React, no I/O. Covered by Vitest, including hand-verifiable cases.
 - `src/lib/format.ts` – Czech formatting via `Intl` (`cs-CZ`). Output contains NBSP (U+00A0).
-- `src/brand.config.ts` – single source of truth for brand colors, font, handle and disclaimer.
+- `src/brand.config.ts` – single source of truth for brand colors, asset colors, site URL and
+  disclaimer. The root layout turns `brand.colors` into `--brand-*` CSS variables; `globals.css`
+  maps them to Tailwind colors (`bg-surface`, `text-accent`, …). Never hardcode hex in components.
+  Font (Space Grotesk, latin-ext) is loaded in `src/app/fonts.ts`. Theme is dark-only (variant "Noc").
+- Asset colors were validated for color-vision deficiency against the dark background; cash is
+  neutral gray (in nominal mode it equals the "invested" line, which is dashed).
+- `src/components/` – `Calculator` (client state, recomputes on every change), `InputsForm`,
+  `Results` (with `ModeToggle` and `SavingsRateField`), `Footer`. `src/lib/inputs.ts` holds
+  defaults, limits and validation; `src/lib/market.ts` loads the bundled JSON.
 - Inputs are mirrored in URL search params so a result can be shared by link.
 - The project path must not contain `?` – Turbopack truncates paths at it and the build fails.
 
@@ -51,6 +62,9 @@ the "why" behind important decisions.
 
 - UI copy in Czech: friendly, informal (tykání), short punchy sentences. Code, identifiers and
   comments in English.
+- Copy must not assume the reader's gender: no "měl/investoval/byl" about the reader. Rephrase
+  ("Kolik by dnes měly tvoje peníze", "z X máš Y") or talk about the asset ("Bitcoin spadl").
+- Month names after "od/do" need the genitive: use `formatMonthGenitive` ("od prosince 2014").
 - Czech number format: `1 234 567 Kč`, `12,3 %`. Always use the helpers in `src/lib/format.ts`.
 - Mobile-first: design for ~375px width first, then scale up.
 - Disclaimer (footer and share image), verbatim: „Obsah je pouze informativní, nejde o finanční

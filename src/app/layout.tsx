@@ -1,23 +1,28 @@
-import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import type { CSSProperties } from "react";
+import type { Metadata, Viewport } from "next";
+import { brand } from "@/brand.config";
+import { brandFont } from "./fonts";
 import "./globals.css";
 
-// Placeholder font until the brand font is chosen (step 4).
-// "latin-ext" is required for Czech diacritics (ř, ě, ů, …); without it they fall back to a system font.
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin", "latin-ext"],
-});
-
 export const metadata: Metadata = {
-  title: "Co kdybych?",
-  description: "Kolik bys dnes měl, kdybys pravidelně investoval? Spočítej si to.",
+  title: brand.name,
+  description: brand.tagline,
 };
+
+export const viewport: Viewport = {
+  themeColor: brand.colors.bg,
+  colorScheme: "dark",
+};
+
+// Brand colors as CSS variables (--brand-bg, --brand-accent, …), read by globals.css.
+const brandVars = Object.fromEntries(
+  Object.entries(brand.colors).map(([name, value]) => [`--brand-${name}`, value]),
+) as CSSProperties;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="cs" className={`${geistSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="cs" className={`${brandFont.variable} h-full antialiased`} style={brandVars}>
+      <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );
 }

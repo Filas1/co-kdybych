@@ -61,6 +61,38 @@ export function formatPercentSigned(fraction: number): string {
   return percentSigned.format(cleanZero(fraction, 3));
 }
 
+const monthName = new Intl.DateTimeFormat("cs-CZ", { month: "long", timeZone: "UTC" });
+
+/** 1 → "leden", 12 → "prosinec" */
+export function formatMonthName(monthNumber: number): string {
+  return monthName.format(new Date(Date.UTC(2000, monthNumber - 1, 1)));
+}
+
+const dayMonthYear = new Intl.DateTimeFormat("cs-CZ", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+
+/**
+ * Genitive (2. pád) for phrases like "od prosince 2014" or "do září 2026". Czech Intl uses the
+ * genitive month name when a day is present ("1. prosince 2014"), so we format a full date and
+ * keep only the month and year parts.
+ */
+export function formatMonthGenitive(month: string): string {
+  const [year, monthIndex] = month.split("-").map(Number);
+  const parts = dayMonthYear.formatToParts(new Date(Date.UTC(year, monthIndex - 1, 1)));
+  const name = parts.find((p) => p.type === "month")!.value;
+  return `${name} ${year}`;
+}
+
+/** Last day of a "YYYY-MM" month, e.g. "2026-09" → "30. září 2026". */
+export function formatMonthEnd(month: string): string {
+  const [year, monthIndex] = month.split("-").map(Number);
+  return dayMonthYear.format(new Date(Date.UTC(year, monthIndex, 0)));
+}
+
 /** "2015-01" → "leden 2015" */
 export function formatMonth(month: string): string {
   const [year, monthIndex] = month.split("-").map(Number);
