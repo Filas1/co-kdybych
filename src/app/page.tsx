@@ -1,5 +1,6 @@
+import { Suspense } from "react";
 import { brand } from "@/brand.config";
-import { Calculator } from "@/components/Calculator";
+import { Calculator, CalculatorSkeleton } from "@/components/Calculator";
 import { Footer } from "@/components/Footer";
 
 export default function Home() {
@@ -12,7 +13,11 @@ export default function Home() {
           </h1>
           <p className="max-w-xl text-lg text-muted">{brand.tagline}</p>
         </header>
-        <Calculator />
+        {/* The calculator reads the shared inputs from the URL, which only the browser knows.
+            Suspense keeps the rest of the page static and shows a skeleton meanwhile. */}
+        <Suspense fallback={<CalculatorSkeleton />}>
+          <Calculator />
+        </Suspense>
       </main>
       <Footer />
     </>

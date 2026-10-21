@@ -48,7 +48,16 @@ the UI or on the share image (the image shows the site URL instead).
   (Recharts 3, `responsive` prop, animation off, custom tooltip; a fixed `width` and
   `interactive={false}` render it for the share image). When one asset's peak is ≥ 3× every other
   line (in practice Bitcoin), `ChartSection` offers hiding it from the chart only.
-- `react-is` must match the installed React version (Recharts requirement). `src/lib/inputs.ts` holds
+- `react-is` must match the installed React version (Recharts requirement).
+- Shareable link: `src/lib/url-state.ts` (Czech params `mesicne`, `vklad`, `od`, `aktiva`,
+  `realne`, `sazba`; forgiving parser). `Calculator` reads them once via `useSearchParams`
+  (wrapped in `<Suspense>` in `page.tsx`, otherwise the static build fails) and writes changes
+  back with `history.replaceState`.
+- Story image: `src/lib/share-content.ts` (text, tested) + `ShareCard` (1080×1920, mounted
+  off-screen only while capturing, hero number measured to fit) + `ShareBar` (html-to-image
+  `toBlob` twice – Safari drops fonts on the first pass – with the font CSS cached; preview in a
+  native `<dialog>`, then Web Share with the file, or PNG download). Generation takes ~0.1 s in a
+  visible tab; hidden/background tabs throttle timers and make it look slow. `src/lib/inputs.ts` holds
   defaults, limits and validation; `src/lib/market.ts` loads the bundled JSON.
 - Inputs are mirrored in URL search params so a result can be shared by link.
 - The project path must not contain `?` – Turbopack truncates paths at it and the build fails.

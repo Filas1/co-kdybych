@@ -14,13 +14,15 @@ interface Props {
   /** Tooltip and hover crosshair (off for the static share image). */
   interactive?: boolean;
   fontSize?: number;
+  /** Line width in px; the 1080 px share image needs thicker lines to read on a phone. */
+  strokeWidth?: number;
 }
 
 /**
  * Value over time: one 2px line per asset, the dashed "invested" line, horizontal gridlines only.
  * Animation is off: values change on every keystroke and re-animating each time is distracting.
  */
-export function ValueChart({ rows, series, height, width, interactive = true, fontSize = 12 }: Props) {
+export function ValueChart({ rows, series, height, width, interactive = true, fontSize = 12, strokeWidth = 2 }: Props) {
   const tick = { fill: brand.colors.muted, fontSize };
   const sizing = width ? { width, height } : { responsive: true, style: { width: "100%", height } };
   // Draw the highest line last, so it sits on top where lines cross.
@@ -59,8 +61,8 @@ export function ValueChart({ rows, series, height, width, interactive = true, fo
           dataKey={s.key}
           name={s.label}
           stroke={s.color}
-          strokeWidth={2}
-          strokeDasharray={s.dashed ? "6 4" : undefined}
+          strokeWidth={strokeWidth}
+          strokeDasharray={s.dashed ? `${strokeWidth * 3} ${strokeWidth * 2}` : undefined}
           strokeLinecap="round"
           strokeLinejoin="round"
           dot={false}

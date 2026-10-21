@@ -15,16 +15,19 @@ import { savingsRateIsEstimate } from "@/lib/market";
 import { ChartSection } from "./ChartSection";
 import { ModeToggle } from "./ModeToggle";
 import { SavingsRateField } from "./SavingsRateField";
+import { ShareBar } from "./ShareBar";
 
 interface Props {
   inputs: CalculatorInputs;
   errors: InputError[];
   result: SimulationResult | null;
   lesson: string | null;
+  /** Serialized inputs, used for the shareable link. */
+  query: string;
   onChange: (patch: Partial<CalculatorInputs>) => void;
 }
 
-export function Results({ inputs, errors, result, lesson, onChange }: Props) {
+export function Results({ inputs, errors, result, lesson, query, onChange }: Props) {
   const savingsRate = savingsRateIsEstimate && inputs.assets.includes("savings") && (
     <SavingsRateField rate={inputs.savingsRate} errors={errors} onChange={(savingsRate) => onChange({ savingsRate })} />
   );
@@ -63,6 +66,8 @@ export function Results({ inputs, errors, result, lesson, onChange }: Props) {
       {lesson && <p className="rounded-3xl bg-accent p-5 text-lg font-bold leading-snug text-on-accent">{lesson}</p>}
 
       <ChartSection result={result} />
+
+      <ShareBar result={result} inputs={inputs} query={query} />
 
       <ul className="grid gap-3 sm:grid-cols-2">
         {available.map((asset) => (
