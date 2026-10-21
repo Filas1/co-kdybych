@@ -49,6 +49,14 @@ the UI or on the share image (the image shows the site URL instead).
   `interactive={false}` render it for the share image). When one asset's peak is ≥ 3× every other
   line (in practice Bitcoin), `ChartSection` offers hiding it from the chart only.
 - `react-is` must match the installed React version (Recharts requirement).
+- Performance: `ChartSection` and `ShareCard` are loaded with `next/dynamic` (`ssr: false`) and
+  html-to-image with a dynamic `import()`, so Recharts (~100 kB gz) is not in the initial bundle.
+- Metadata: `layout.tsx` (Open Graph, Twitter, `metadataBase` = `brand.siteUrl`),
+  `opengraph-image.tsx` (real default scenario computed at build), `icon.tsx`, `apple-icon.tsx`,
+  `robots.ts`, `sitemap.ts`. Image routes read fonts from `assets/fonts` via `src/lib/og-fonts.ts`
+  synchronously – an async read would make them dynamic under Cache Components. All routes must
+  stay static (`○` in the build output).
+- Touch targets ≥ 44 px (`min-h-11`), animations behind `motion-safe:`; layout checked at 320 px.
 - Shareable link: `src/lib/url-state.ts` (Czech params `mesicne`, `vklad`, `od`, `aktiva`,
   `realne`, `sazba`; forgiving parser). `Calculator` reads them once via `useSearchParams`
   (wrapped in `<Suspense>` in `page.tsx`, otherwise the static build fails) and writes changes

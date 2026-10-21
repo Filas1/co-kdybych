@@ -91,7 +91,7 @@ export function InputsForm({ inputs, errors, onChange }: Props) {
               onClick={() => onChange({ monthly: amount })}
               aria-pressed={inputs.monthly === amount}
               aria-label={`${amount.toLocaleString("cs-CZ")} Kč měsíčně`}
-              className="tabular min-h-10 rounded-full border border-line text-sm transition hover:border-muted aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:font-bold aria-pressed:text-on-accent"
+              className="tabular min-h-11 rounded-full border border-line text-sm transition hover:border-muted aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:font-bold aria-pressed:text-on-accent"
             >
               {amount.toLocaleString("cs-CZ")}
             </button>
@@ -121,7 +121,7 @@ export function InputsForm({ inputs, errors, onChange }: Props) {
           <button
             type="button"
             onClick={() => setShowInitial(true)}
-            className="mt-1 min-h-10 text-sm text-accent underline-offset-4 hover:underline"
+            className="mt-1 min-h-11 text-sm text-accent underline-offset-4 hover:underline"
           >
             + Přidat jednorázový vklad na začátku
           </button>
@@ -174,7 +174,7 @@ export function InputsForm({ inputs, errors, onChange }: Props) {
                 type="button"
                 onClick={() => toggleAsset(asset)}
                 aria-pressed={inputs.assets.includes(asset)}
-                className="flex min-h-10 items-center gap-2 rounded-full border border-line px-3 text-sm text-muted transition hover:border-muted aria-pressed:border-fg aria-pressed:text-fg"
+                className="flex min-h-11 items-center gap-2 rounded-full border border-line px-3 text-sm text-muted transition hover:border-muted aria-pressed:border-fg aria-pressed:text-fg"
               >
                 <span className="size-2.5 rounded-full" style={{ background: brand.assetColors[asset] }} aria-hidden />
                 {ASSETS[asset].label}

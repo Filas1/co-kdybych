@@ -1,3 +1,6 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import { brand } from "@/brand.config";
 import { ASSETS } from "@/lib/assets";
 import type { AssetResult, AvailableAssetResult, SimulationResult } from "@/lib/calc";
@@ -12,10 +15,16 @@ import {
 } from "@/lib/format";
 import type { CalculatorInputs, InputError } from "@/lib/inputs";
 import { savingsRateIsEstimate } from "@/lib/market";
-import { ChartSection } from "./ChartSection";
 import { ModeToggle } from "./ModeToggle";
 import { SavingsRateField } from "./SavingsRateField";
 import { ShareBar } from "./ShareBar";
+
+// The chart library is the biggest piece of JavaScript on the page. Loading it separately lets the
+// numbers show up first; the placeholder keeps the same height so nothing jumps when it arrives.
+const ChartSection = dynamic(() => import("./ChartSection").then((m) => m.ChartSection), {
+  ssr: false,
+  loading: () => <div className="h-[392px] rounded-3xl bg-surface motion-safe:animate-pulse" aria-hidden />,
+});
 
 interface Props {
   inputs: CalculatorInputs;
@@ -63,7 +72,9 @@ export function Results({ inputs, errors, result, lesson, query, onChange }: Pro
         </p>
       </div>
 
-      {lesson && <p className="rounded-3xl bg-accent p-5 text-lg font-bold leading-snug text-on-accent">{lesson}</p>}
+      {lesson && (
+        <p className="rounded-3xl bg-accent p-5 text-lg font-bold leading-snug text-balance text-on-accent">{lesson}</p>
+      )}
 
       <ChartSection result={result} />
 
@@ -173,7 +184,7 @@ function UnavailableCard({
           <button
             type="button"
             onClick={() => onStart(asset.availableFrom!)}
-            className="min-h-10 text-sm text-accent underline-offset-4 hover:underline"
+            className="min-h-11 text-sm text-accent underline-offset-4 hover:underline"
           >
             Začít od {formatMonthGenitive(asset.availableFrom)}
           </button>

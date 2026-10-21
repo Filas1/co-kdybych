@@ -11,7 +11,7 @@ export default function Home() {
           <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">
             Co kdybych<span className="text-accent">?</span>
           </h1>
-          <p className="max-w-xl text-lg text-muted">{brand.tagline}</p>
+          <p className="max-w-xl text-lg text-balance text-muted">{brand.tagline}</p>
         </header>
         {/* The calculator reads the shared inputs from the URL, which only the browser knows.
             Suspense keeps the rest of the page static and shows a skeleton meanwhile. */}

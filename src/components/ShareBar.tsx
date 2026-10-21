@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { getFontEmbedCSS, toBlob } from "html-to-image";
+import { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { brand } from "@/brand.config";
 import type { SimulationResult } from "@/lib/calc";
 import type { CalculatorInputs } from "@/lib/inputs";
-import { shareContent } from "@/lib/share-content";
-import { ShareCard, STORY_HEIGHT, STORY_WIDTH } from "./ShareCard";
+import { STORY_HEIGHT, STORY_WIDTH, shareContent } from "@/lib/share-content";
+
+// The story card pulls in the chart library; load it only when someone actually wants an image.
+const ShareCard = dynamic(() => import("./ShareCard").then((m) => m.ShareCard), { ssr: false });
 
 interface Props {
   result: SimulationResult;
@@ -28,6 +30,7 @@ const FILE_NAME = "co-kdybych.png";
 let fontEmbedCss: Promise<string> | null = null;
 
 async function renderStory(node: HTMLElement): Promise<Blob> {
+  const { getFontEmbedCSS, toBlob } = await import("html-to-image");
   await document.fonts.ready;
   fontEmbedCss ??= getFontEmbedCSS(node).catch((error) => {
     fontEmbedCss = null; // retry next time instead of caching the failure
@@ -59,26 +62,24 @@ async function renderStory(node: HTMLElement): Promise<Blob> {
 export function ShareBar({ result, inputs, query }: Props) {
   const content = shareContent(result, inputs);
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
+  /** Increases with every request, so a slow capture from an earlier opening is ignored. */
+  const requestId = useRef(0);
   const [image, setImage] = useState<ImageState>({ status: "idle" });
   const [linkNote, setLinkNote] = useState<string | null>(null);
   const [shareNote, setShareNote] = useState<string | null>(null);
 
-  // Draw the PNG once the off-screen card is mounted.
-  useEffect(() => {
-    if (image.status !== "rendering" || !cardRef.current) return;
-    let cancelled = false;
-    renderStory(cardRef.current)
-      .then((blob) => {
-        if (cancelled) return;
-        const file = new File([blob], FILE_NAME, { type: "image/png" });
-        setImage({ status: "ready", file, previewUrl: URL.createObjectURL(blob) });
-      })
-      .catch(() => !cancelled && setImage({ status: "error" }));
-    return () => {
-      cancelled = true;
-    };
-  }, [image.status]);
+  // Called by the off-screen card once it is laid out.
+  const capture = useCallback(async (node: HTMLElement) => {
+    const id = requestId.current;
+    try {
+      const blob = await renderStory(node);
+      if (id !== requestId.current) return;
+      const file = new File([blob], FILE_NAME, { type: "image/png" });
+      setImage({ status: "ready", file, previewUrl: URL.createObjectURL(blob) });
+    } catch {
+      if (id === requestId.current) setImage({ status: "error" });
+    }
+  }, []);
 
   // Free the preview's memory when it is replaced or the component goes away.
   useEffect(() => {
@@ -89,6 +90,7 @@ export function ShareBar({ result, inputs, query }: Props) {
   if (!content) return null;
 
   function openImage() {
+    requestId.current++;
     setShareNote(null);
     setImage({ status: "rendering" });
     dialogRef.current?.showModal();
@@ -157,7 +159,7 @@ export function ShareBar({ result, inputs, query }: Props) {
       {/* Off-screen story card, mounted only while the image is being drawn. */}
       {image.status === "rendering" && (
         <div aria-hidden style={{ position: "fixed", left: -20000, top: 0, pointerEvents: "none" }}>
-          <ShareCard ref={cardRef} result={result} content={content} />
+          <ShareCard result={result} content={content} onReady={capture} />
         </div>
       )}
 
@@ -166,7 +168,9 @@ export function ShareBar({ result, inputs, query }: Props) {
         // The "close" event arrives asynchronously; if the dialog was reopened in the meantime,
         // resetting here would cancel the new image, so only reset while it is really closed.
         onClose={() => {
-          if (!dialogRef.current?.open) setImage({ status: "idle" });
+          if (dialogRef.current?.open) return;
+          requestId.current++; // drop a capture that is still running
+          setImage({ status: "idle" });
         }}
         className="m-auto w-[min(92vw,420px)] rounded-3xl bg-surface p-5 text-fg backdrop:bg-black/70"
         aria-labelledby="share-title"
@@ -178,7 +182,7 @@ export function ShareBar({ result, inputs, query }: Props) {
           <button
             type="button"
             onClick={() => dialogRef.current?.close()}
-            className="min-h-10 rounded-full px-3 text-sm text-muted hover:text-fg"
+            className="min-h-11 rounded-full px-3 text-sm text-muted hover:text-fg"
           >
             Zavřít
           </button>

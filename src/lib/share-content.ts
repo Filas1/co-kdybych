@@ -6,6 +6,10 @@ import { lessonSentence, type AvailableAssetResult, type SimulationResult } from
 import { formatCzk, formatMonthGenitive, formatPercentSigned } from "./format";
 import type { CalculatorInputs } from "./inputs";
 
+/** Instagram story size in px. */
+export const STORY_WIDTH = 1080;
+export const STORY_HEIGHT = 1920;
+
 export interface ShareContent {
   /** The asset the big number belongs to (the one that ended highest). */
   asset: AssetId;

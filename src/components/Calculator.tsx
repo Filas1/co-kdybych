@@ -49,11 +49,11 @@ export function Calculator() {
 export function CalculatorSkeleton() {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)]" aria-busy="true" aria-label="Načítám kalkulačku">
-      <div className="h-[460px] animate-pulse rounded-3xl bg-surface" />
+      <div className="h-[460px] rounded-3xl bg-surface motion-safe:animate-pulse" />
       <div className="space-y-4">
-        <div className="h-12 animate-pulse rounded-xl bg-surface" />
-        <div className="h-28 animate-pulse rounded-3xl bg-surface" />
-        <div className="h-80 animate-pulse rounded-3xl bg-surface" />
+        <div className="h-12 rounded-xl bg-surface motion-safe:animate-pulse" />
+        <div className="h-28 rounded-3xl bg-surface motion-safe:animate-pulse" />
+        <div className="h-80 rounded-3xl bg-surface motion-safe:animate-pulse" />
       </div>
     </div>
   );

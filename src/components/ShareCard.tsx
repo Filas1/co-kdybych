@@ -1,20 +1,20 @@
 "use client";
 
-import { forwardRef, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { brand } from "@/brand.config";
 import type { SimulationResult } from "@/lib/calc";
 import { chartRows, chartSeries } from "@/lib/chart-data";
-import { fitFontSize, heroFontSize, type ShareContent } from "@/lib/share-content";
+import { STORY_HEIGHT, STORY_WIDTH, fitFontSize, heroFontSize, type ShareContent } from "@/lib/share-content";
 import { SeriesSwatch, ValueChart } from "./ValueChart";
 
-export const STORY_WIDTH = 1080;
-export const STORY_HEIGHT = 1920;
 const PAD_X = 96;
 const CONTENT_WIDTH = STORY_WIDTH - 2 * PAD_X;
 
 interface Props {
   result: SimulationResult;
   content: ShareContent;
+  /** Called once the card is laid out and ready to be captured. */
+  onReady: (node: HTMLElement) => void;
 }
 
 /**
@@ -23,11 +23,11 @@ interface Props {
  * inside that safe area. Only the winning asset and the "invested" line are drawn: a story is
  * seen for a few seconds, five lines would not be readable.
  */
-export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ result, content }, ref) {
+export function ShareCard({ result, content, onReady }: Props) {
+  const cardRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLSpanElement>(null);
 
-  // The font-size guess is approximate; measure the real width and scale the number to fill the
-  // line exactly. Runs before the image is captured (layout effects run before the parent's effects).
+  // The font-size guess is approximate; measure the real width and scale the number to fill the line.
   useLayoutEffect(() => {
     const el = heroRef.current;
     if (!el) return;
@@ -37,13 +37,19 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
     }
   }, [content.hero]);
 
+  // Wait one frame so the chart has drawn its lines, then hand the node over for capturing.
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => cardRef.current && onReady(cardRef.current));
+    return () => cancelAnimationFrame(frame);
+  }, [onReady]);
+
   const series = chartSeries(result).filter((s) => s.key === content.asset || s.key === "invested");
   const rows = chartRows(result, series);
   const site = brand.siteUrl.replace(/^https?:\/\//, "");
 
   return (
     <div
-      ref={ref}
+      ref={cardRef}
       className="flex flex-col font-sans"
       style={{
         width: STORY_WIDTH,
@@ -121,4 +127,4 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
       </div>
     </div>
   );
-});
+}

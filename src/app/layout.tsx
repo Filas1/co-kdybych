@@ -4,9 +4,23 @@ import { brand } from "@/brand.config";
 import { brandFont } from "./fonts";
 import "./globals.css";
 
+const description = `${brand.tagline} Porovnej S&P 500, zlato, Bitcoin, spořák a hotovost na skutečných datech od roku 2000.`;
+
 export const metadata: Metadata = {
+  // Makes the Open Graph image and canonical URLs absolute (required by social networks).
+  metadataBase: new URL(brand.siteUrl),
   title: brand.name,
-  description: brand.tagline,
+  description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "cs_CZ",
+    url: "/",
+    siteName: brand.name,
+    title: brand.name,
+    description,
+  },
+  twitter: { card: "summary_large_image", title: brand.name, description },
 };
 
 export const viewport: Viewport = {

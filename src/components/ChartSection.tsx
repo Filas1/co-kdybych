@@ -57,7 +57,7 @@ export function ChartSection({ result }: { result: SimulationResult }) {
             type="button"
             onClick={() => setHideDominant((v) => !v)}
             aria-pressed={hideDominant}
-            className="min-h-10 rounded-full border border-line px-4 font-medium transition hover:border-muted aria-pressed:border-accent aria-pressed:text-accent"
+            className="min-h-11 rounded-full border border-line px-4 font-medium transition hover:border-muted aria-pressed:border-accent aria-pressed:text-accent"
           >
             {hideDominant ? `Ukázat ${ASSETS[dominant].inSentence}` : `Skrýt ${ASSETS[dominant].inSentence}`}
           </button>
