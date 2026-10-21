@@ -12,6 +12,9 @@ behind important decisions.
 The site is intentionally NOT tied to the owner's personal social profile: no handle anywhere in
 the UI or on the share image (the image shows the site URL instead).
 
+Production: https://co-kdybych.vercel.app (Vercel, deploys automatically on every push to `main`;
+repo github.com/Filas1/co-kdybych).
+
 ## Commands
 
 - `npm run dev` – dev server on http://localhost:3000

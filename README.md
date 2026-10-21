@@ -6,7 +6,7 @@ Webová kalkulačka pro mladé Čechy. Zadáš měsíční částku, od kdy a do
 
 _A Czech "what if I had invested" calculator: regular monthly investing into the S&P 500, gold, Bitcoin, a savings account or cash, on real monthly data, nominal or inflation-adjusted, with shareable links and an Instagram story image generated in the browser._
 
-**Živá verze:** _(doplň odkaz po nasazení na Vercel)_
+**Živá verze: [co-kdybych.vercel.app](https://co-kdybych.vercel.app)** · příklad sdíleného odkazu: [5 000 Kč měsíčně od roku 2020 v dnešních korunách](https://co-kdybych.vercel.app/?mesicne=5000&od=2020-01&aktiva=sp500,zlato,bitcoin,sporak,hotovost&realne=1)
 
 | Počítač | Mobil: zadání | Mobil: výsledky | Story obrázek |
 | --- | --- | --- | --- |
