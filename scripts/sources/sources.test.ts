@@ -79,6 +79,10 @@ describe("FRED", () => {
       { date: "2014-12-31", value: 318.24 },
     ]);
   });
+
+  it("explains a maintenance page instead of failing on the header", () => {
+    expect(() => parseFredCsv("<!doctype html><title>Site Maintenance</title>")).toThrow(/web page instead of CSV/);
+  });
 });
 
 describe("World Bank Pink Sheet", () => {

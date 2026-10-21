@@ -59,7 +59,7 @@ export async function fetchCnbAradSavings(apiKey: string): Promise<SourceResult>
   return {
     series,
     info: {
-      name: "Česká národní banka – ARAD, úrokové sazby MFI",
+      name: "ČNB ARAD – úrokové sazby měnových finančních institucí",
       url: "https://www.cnb.cz/arad/",
       note: `Ukazatel ${SAVINGS_INDICATOR}: průměrná sazba nových úsporných vkladů na požádání (včetně spořicích účtů), obyvatelstvo, CZK, % p.a.`,
     },

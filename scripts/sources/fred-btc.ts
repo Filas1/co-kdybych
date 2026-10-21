@@ -11,6 +11,9 @@ export const FRED_BTC_URL = `https://fred.stlouisfed.org/graph/fredgraph.csv?id=
 /** FRED CSV: "observation_date,CBBTCUSD". Missing days are "." or empty and are skipped. */
 export function parseFredCsv(text: string): DailyObservation[] {
   const [header, ...rows] = splitLines(text);
+  if (header.trimStart().startsWith("<")) {
+    throw new Error(`[${SOURCE}] FRED returned a web page instead of CSV (maintenance or outage?), try again later`);
+  }
   if (!header.startsWith("observation_date,")) {
     throw new Error(`[${SOURCE}] unexpected CSV header "${header}"`);
   }

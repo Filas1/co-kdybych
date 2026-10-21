@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { brand } from "@/brand.config";
 import { formatMonthGenitive } from "@/lib/format";
 import { market } from "@/lib/market";
@@ -28,6 +29,14 @@ export function Footer() {
             ))}
           </ul>
         </div>
+        <p>
+          S&P 500® je ochranná známka S&P Dow Jones Indices LLC. Tento web s ní ani s poskytovateli dat není nijak spojen.
+        </p>
+        <p>
+          <Link href="/o-projektu" className="font-medium text-fg underline underline-offset-4 hover:text-accent">
+            O projektu, zdroje dat a soukromí
+          </Link>
+        </p>
       </div>
     </footer>
   );

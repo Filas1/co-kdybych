@@ -20,7 +20,7 @@ const FX_FROM = new Date(Date.UTC(1999, 0, 1)); // SPY history on Alpha Vantage 
 const CHECK_MONTHS: Month[] = ["2015-01", "2018-12", "2020-03", "2021-12", "2022-12"];
 
 const SAVINGS_FALLBACK_INFO: SourceInfo = {
-  name: "Česká národní banka – ARAD, úrokové sazby MFI",
+  name: "ČNB ARAD – úrokové sazby měnových finančních institucí",
   url: "https://www.cnb.cz/arad/",
   note: "Nestaženo (chybí CNB_ARAD_API_KEY). Aplikace použije nastavitelnou sazbu.",
 };

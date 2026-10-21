@@ -17,6 +17,11 @@ export const brand = {
       ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
       : "http://localhost:3000"),
 
+  /** Contact for the privacy notice (GDPR asks for a way to reach the operator). */
+  contactEmail: "filasrt@gmail.com",
+  /** Public source code, linked from the about page. */
+  repoUrl: "https://github.com/Filas1/co-kdybych",
+
   /** Font family is loaded in src/app/fonts.ts (next/font needs a module-level call). */
   fontName: "Space Grotesk",
 
