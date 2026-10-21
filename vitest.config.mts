@@ -1,10 +1,10 @@
 import { defineConfig } from "vitest/config";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [tsconfigPaths()],
+  // Resolves the "@/*" alias from tsconfig.json.
+  resolve: { tsconfigPaths: true },
   test: {
-    // Calculation and formatting modules are pure functions, so plain Node is enough (no jsdom).
+    // Calculation, formatting and parsing modules are pure functions, so plain Node is enough (no jsdom).
     environment: "node",
     include: ["src/**/*.test.ts", "scripts/**/*.test.ts"],
   },
