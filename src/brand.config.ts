@@ -8,14 +8,14 @@ export const brand = {
   name: "Co kdybych?",
   tagline: "Kolik by dnes měly tvoje peníze, kdyby každý měsíc pracovaly?",
   /**
-   * Public URL, shown on the share image instead of a social handle. NEXT_PUBLIC_SITE_URL wins
-   * (custom domain); otherwise Vercel's automatic production URL; localhost in development.
+   * Canonical public URL (metadata, sitemap, share image). www.cokdybych.cz is the primary domain on
+   * Vercel; cokdybych.cz and co-kdybych.vercel.app redirect to it. Written out here on purpose:
+   * Vercel's automatic "shortest production domain" would pick the apex, which only redirects.
+   * NEXT_PUBLIC_SITE_URL can override it; `npm run dev` uses localhost.
    */
   siteUrl:
     process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
-      : "http://localhost:3000"),
+    (process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://www.cokdybych.cz"),
 
   /** Contact for the privacy notice (GDPR asks for a way to reach the operator). */
   contactEmail: "filasrt@gmail.com",

@@ -45,7 +45,8 @@ export function ShareCard({ result, content, onReady }: Props) {
 
   const series = chartSeries(result).filter((s) => s.key === content.asset || s.key === "invested");
   const rows = chartRows(result, series);
-  const site = brand.siteUrl.replace(/^https?:\/\//, "");
+  // Shorter on the image ("cokdybych.cz"); the bare domain redirects to www anyway.
+  const site = brand.siteUrl.replace(/^https?:\/\/(www\.)?/, "");
 
   return (
     <div

@@ -6,7 +6,7 @@ Webová kalkulačka pro mladé Čechy. Zadáš měsíční částku, od kdy a do
 
 _A Czech "what if I had invested" calculator: regular monthly investing into the S&P 500, gold, Bitcoin, a savings account or cash, on real monthly data, nominal or inflation-adjusted, with shareable links and an Instagram story image generated in the browser._
 
-**Živá verze: [cokdybych.cz](https://cokdybych.cz)** · příklad sdíleného odkazu: [5 000 Kč měsíčně od roku 2020 v dnešních korunách](https://cokdybych.cz/?mesicne=5000&od=2020-01&aktiva=sp500,zlato,bitcoin,sporak,hotovost&realne=1)
+**Živá verze: [cokdybych.cz](https://www.cokdybych.cz)** · příklad sdíleného odkazu: [5 000 Kč měsíčně od roku 2020 v dnešních korunách](https://www.cokdybych.cz/?mesicne=5000&od=2020-01&aktiva=sp500,zlato,bitcoin,sporak,hotovost&realne=1)
 
 | Počítač | Mobil: zadání | Mobil: výsledky | Story obrázek |
 | --- | --- | --- | --- |
